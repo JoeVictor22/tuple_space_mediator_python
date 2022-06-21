@@ -5,5 +5,5 @@ python3.8.12
 
 ## Como executar
 ```shell
-python main.py
+python main_chat.py
 ```

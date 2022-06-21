@@ -57,7 +57,7 @@ def start_server():
             Servidor: "Broker",
         },
         host="0.0.0.0",
-        port=9090,
+        port=9091,
         ns=False,
         verbose=True,
     )
