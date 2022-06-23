@@ -9,7 +9,6 @@ from config import PYRO_URL
 
 class Interface:
     master = tk.Tk()
-    # master.geometry('200x150')
 
     form = {}
     checkbox = {}
