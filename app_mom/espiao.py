@@ -63,6 +63,9 @@ class Espiao:
         if now - self.counter < 0.16:
             return
 
+        # TODO add words to class
+        # TODO get messages and check for words
+
         if self.active:
             if self.random:
                 self.value = random.randint(

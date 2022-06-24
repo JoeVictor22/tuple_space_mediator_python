@@ -26,6 +26,7 @@ class TupleObject:
         return TupleObject.pickle_serialize(self)
 
     def is_equal_to(self, tupla):
+        # TODO add new key tipo
         keys = ["chat_room", "dest", "who"]
 
         for key in keys:
