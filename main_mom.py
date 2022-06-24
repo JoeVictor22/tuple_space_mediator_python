@@ -8,7 +8,7 @@ if __name__ == "__main__":
             p._pyroBind()
 
             choice = input(
-                "Digite: \n1 (para criar um cliente)\n2 (para criar um sensor)\n"
+                "Digite: \n1 (para criar um espião)\n2 (para criar um cliente)\n"
             )
 
             if choice == "1":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
                 start(cliente)
 
             elif choice == "2":
-                from app_mom.sensor import Sensor
+                from app_mom.espiao import Espiao
 
                 print("Criando Sensor")
                 name = input("Digite o nome (vazio para gerar aleatorio)\n")
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                 if monitor == "" or monitor.isdigit():
                     monitor = None
 
-                sensor = Sensor(name=name, topic_name=topic, monitor=monitor)
+                sensor = Espiao(name=name, topic_name=topic, monitor=monitor)
                 from app_mom.sensor_interface import start
 
                 start(sensor)

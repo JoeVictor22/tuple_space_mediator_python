@@ -11,6 +11,7 @@ class TupleObject:
     who: str = None
     chat_room: str = None
     message: str = None
+    tipo: str = None
 
     @staticmethod
     def pickle_deserialize(obj):

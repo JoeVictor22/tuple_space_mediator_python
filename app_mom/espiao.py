@@ -6,7 +6,7 @@ import Pyro4
 from config import PYRO_URL
 
 
-class Sensor:
+class Espiao:
     broker = None
     logger = None
 
