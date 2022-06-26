@@ -16,7 +16,6 @@ class Espiao:
     topic_name = None
     value = None
 
-    monitor = None
     min_target = None
     max_target = None
 
@@ -24,23 +23,18 @@ class Espiao:
     random = None
     timer = None
     active = None
-    monitor_types = ["Temperatura", "Umidade", "Velocidade"]
     buffer = None
     counter = None
 
-    def __init__(self, name=None, topic_name=None, monitor=None):
+    def __init__(self, name=None, topic_name=None):
         if name is None:
             name = f"sensor_{random.randint(1000,9999)}"
 
         if topic_name is None:
             topic_name = f"topic_{random.randint(1000,9999)}"
 
-        if monitor is None or monitor > len(self.monitor_types):
-            monitor = random.randint(1, 3)
-
         self.min_target = 0
         self.max_target = 10
-        self.monitor = monitor - 1
         self.name = name
         self.value = 0
         self.topic_name = topic_name
@@ -61,7 +55,18 @@ class Espiao:
         self.messages = list()
 
     def add_new_msg(self, msg):
-        self.monitor_msgs.append(msg)
+        if msg not in self.monitor_msgs:
+            # self.send_message(msg)
+            self.monitor_msgs.append(msg)
+
+    def send_message(self, message, dest=None, room=None):
+        new_tuple = TupleObject(
+            who=self.name, message=message, dest=dest, chat_room=room, tipo="spy"
+        )
+        self._send_to_server(new_tuple)
+
+    def _send_to_server(self, tuple):
+        self.broker.write(tuple.pickled())
 
     def add_messages_to_buffer(self, messages):
         msgs = map(TupleObject.pickle_deserialize, messages)
@@ -89,8 +94,18 @@ class Espiao:
         self.messages.append(msg)
         self.messages_id.append(msg.uuid)
         self.broker.publish(self.topic_name, self.value, msg.message)
-        self.insert_message(f"[ENCONTRADA] {msg.message}")
+        self.insert_message(f"[BLOQUEADA] {msg.message}")
 
+    def add_message_allowed(self, msg):
+        pprint(msg)
+        if self._exists_in_client(msg):
+            return
+
+        self.messages.append(msg)
+        self.messages_id.append(msg.uuid)
+        self.insert_message(f"[VERIFICADA] {msg.message}")
+        msg.tipo = "chat"
+        self.chat_server.write(msg.pickled())
 
     def update(self):
         now = time.time()
@@ -103,9 +118,14 @@ class Espiao:
 
         for msg in msgs_on_server:
             msg = TupleObject.pickle_deserialize(msg)
+            blocked = False
             for msg_contains in self.monitor_msgs:
                 if msg_contains in msg.message:
                     self.add_message_to_broker(msg)
+                    blocked = True
+            if not blocked:
+                self.add_message_allowed(msg)
+
         self.counter = time.time()
 
     def insert_message(self, message):

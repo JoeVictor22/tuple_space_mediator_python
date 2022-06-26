@@ -32,7 +32,7 @@ def start(espiao_alvo):
         if is_str(entry1):
             msg = str(entry1.get())
             espiao.add_new_msg(msg)
-            espiao.insert_message(msg)
+            espiao.insert_message(f"[MONITORANDO] {msg}")
             update_labels()
 
     def update_labels():

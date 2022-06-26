@@ -11,7 +11,7 @@ class TupleObject:
     who: str = None
     chat_room: str = None
     message: str = None
-    tipo: str = None
+    tipo: str = "spy"
 
     @staticmethod
     def pickle_deserialize(obj):
@@ -27,7 +27,7 @@ class TupleObject:
 
     def is_equal_to(self, tupla):
         # TODO add new key tipo
-        keys = ["chat_room", "dest", "who"]
+        keys = ["chat_room", "dest", "who", "tipo"]
 
         for key in keys:
             if (
