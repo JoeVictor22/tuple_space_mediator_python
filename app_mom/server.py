@@ -3,6 +3,8 @@ from typing import List
 
 import Pyro4
 
+from config import PYRO_BROKER_NAME, PYRO_BROKER_HOST, PYRO_BROKER_PORT
+
 
 @Pyro4.expose
 class Servidor(object):
@@ -54,10 +56,10 @@ class Servidor(object):
 def start_server():
     Pyro4.Daemon.serveSimple(
         {
-            Servidor: "Broker",
+            Servidor: PYRO_BROKER_NAME,
         },
-        host="0.0.0.0",
-        port=9091,
+        host=PYRO_BROKER_HOST,
+        port=PYRO_BROKER_PORT,
         ns=False,
         verbose=True,
     )

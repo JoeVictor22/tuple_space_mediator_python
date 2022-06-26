@@ -2,12 +2,13 @@ import random
 
 import Pyro4
 
-from config import PYRO_URL
 
 import time
 
+from config import PYRO_BROKER_PORT, PYRO_BROKER_HOST, PYRO_BROKER_NAME
 
-class Client:
+
+class Mediador:
     broker = None
 
     name = None
@@ -25,7 +26,7 @@ class Client:
         self.topics = list()
         self.name = name
         self.value = random.randint(0, 400)
-        self.broker = Pyro4.core.Proxy(PYRO_URL)
+        self.broker = Pyro4.core.Proxy(f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}")
         self.broker_topics = list()
         self.counter = time.time()
 

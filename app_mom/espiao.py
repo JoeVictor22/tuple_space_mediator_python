@@ -3,7 +3,7 @@ import time
 
 import Pyro4
 
-from config import PYRO_URL
+from config import PYRO_BROKER_PORT, PYRO_BROKER_HOST, PYRO_BROKER_NAME
 
 
 class Espiao:
@@ -42,7 +42,7 @@ class Espiao:
         self.name = name
         self.value = 0
         self.topic_name = topic_name
-        self.broker = Pyro4.core.Proxy(PYRO_URL)
+        self.broker = Pyro4.core.Proxy(f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}")
         self.random = False
         self.timer = 1
         self.calls = 0
@@ -50,35 +50,21 @@ class Espiao:
         self.buffer = list()
         self.counter = time.time()
 
-    def set_min(self, val):
-        if val <= self.max_target:
-            self.min_target = val
-
-    def set_max(self, val):
-        if val >= self.min_target:
-            self.max_target = val
+    def add_new_msg(self, msg):
+        print(f"NOVA MSG:  {msg}")
 
     def update(self):
         now = time.time()
         if now - self.counter < 0.16:
             return
 
-        # TODO add words to class
-        # TODO get messages and check for words
+        # TODO, get messages from chat
+        # self.broker.publish(self.topic_name, self.value, message)
+        # self.insert_message(message)
 
-        if self.active:
-            if self.random:
-                self.value = random.randint(
-                    self.min_target - (self.min_target * 2),
-                    self.max_target + self.max_target,
-                )
-
-            message = f"Producer: {self.name}, Topic: {self.topic_name}, Parameter: {self.monitor_types[self.monitor]}, Value: {self.value}"
-
-            if self.value >= self.max_target or self.value <= self.min_target:
-                self.calls += 1
-                self.broker.publish(self.topic_name, self.value, message)
-                self.insert_message(message)
+        rand = random.randint(0, 10)
+        if rand == 3:
+            print("ACHOU MSG")
 
         self.counter = time.time()
 
