@@ -54,6 +54,7 @@ class Espiao:
 
     def add_new_msg(self, msg):
         print(f"NOVA MSG:  {msg}")
+        print(f"topico {self.topic_name}")
 
     def update(self):
         now = time.time()

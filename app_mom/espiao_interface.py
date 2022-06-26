@@ -29,11 +29,11 @@ def start(espiao_alvo):
         return False
 
     def add_new_msg():
-        if is_str(msg_a_monitorar):
-            espiao.add_new_msg(str(msg_a_monitorar.get()))
+        if is_str(entry1):
+            msg = str(entry1.get())
+            espiao.add_new_msg(msg)
+            espiao.insert_message(msg)
             update_labels()
-
-    msg_a_monitorar = tk.StringVar()
 
     def update_labels():
         pass
@@ -43,7 +43,7 @@ def start(espiao_alvo):
 
     idx = 0
     # input min
-    label1 = tk.Label(master, textvariable=msg_a_monitorar)
+    label1 = tk.Label(master, text="Mensagem a monitorar")
     label1.config(font=("helvetica", 10))
     label1.grid(row=0, column=idx, columnspan=1)
     # grid

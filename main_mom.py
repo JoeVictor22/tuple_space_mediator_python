@@ -10,7 +10,7 @@ if __name__ == "__main__":
             p._pyroBind()
 
             choice = input(
-                "Digite: \n1 (para criar um espião)\n2 (para criar um mediador)\n"
+                "Digite: \n1 (para criar um mediador)\n2 (para criar um espião)\n"
             )
 
             if choice == "1":
