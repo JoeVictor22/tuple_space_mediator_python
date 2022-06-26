@@ -42,7 +42,7 @@ class Client:
 
         if self.room:
             msgs_on_server = self.server.scan(
-                TupleObject(chat_room=self.room,tipo="chat").pickled()
+                TupleObject(chat_room=self.room, tipo="chat").pickled()
             )
             # private_msgs = self.server.scan(
             #     TupleObject(chat_room=self.room, dest=self.name).pickled()

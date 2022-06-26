@@ -5,7 +5,14 @@ from pprint import pprint
 import Pyro4
 
 from app.objects import TupleObject
-from config import PYRO_BROKER_PORT, PYRO_BROKER_HOST, PYRO_BROKER_NAME, PYRO_CHAT_NAME, PYRO_CHAT_HOST, PYRO_CHAT_PORT
+from config import (
+    PYRO_BROKER_PORT,
+    PYRO_BROKER_HOST,
+    PYRO_BROKER_NAME,
+    PYRO_CHAT_NAME,
+    PYRO_CHAT_HOST,
+    PYRO_CHAT_PORT,
+)
 
 
 class Espiao:
@@ -112,9 +119,7 @@ class Espiao:
         if now - self.counter < 0.16:
             return
 
-        msgs_on_server = self.chat_server.scan(
-            TupleObject().pickled()
-        )
+        msgs_on_server = self.chat_server.scan(TupleObject().pickled())
 
         for msg in msgs_on_server:
             msg = TupleObject.pickle_deserialize(msg)

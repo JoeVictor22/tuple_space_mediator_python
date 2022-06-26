@@ -5,9 +5,7 @@ from config import PYRO_CHAT_NAME, PYRO_CHAT_HOST, PYRO_CHAT_PORT
 
 if __name__ == "__main__":
 
-    with Pyro4.Proxy(
-            f"PYRO:{PYRO_CHAT_NAME}@{PYRO_CHAT_HOST}:{PYRO_CHAT_PORT}"
-    ) as p:
+    with Pyro4.Proxy(f"PYRO:{PYRO_CHAT_NAME}@{PYRO_CHAT_HOST}:{PYRO_CHAT_PORT}") as p:
         try:
             p._pyroBind()
 
