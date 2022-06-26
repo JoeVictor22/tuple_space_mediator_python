@@ -6,6 +6,8 @@ from pprint import pprint
 from app.objects import TupleObject
 from typing import List
 
+from config import PYRO_CHAT_NAME, PYRO_CHAT_HOST, PYRO_CHAT_PORT
+
 
 @Pyro4.expose
 class Servidor(object):
@@ -74,10 +76,10 @@ class Servidor(object):
 def start_server():
     Pyro4.Daemon.serveSimple(
         {
-            Servidor: "Tuplas",
+            Servidor: PYRO_CHAT_NAME,
         },
-        host="0.0.0.0",
-        port=9090,
+        host=PYRO_CHAT_HOST,
+        port=PYRO_CHAT_PORT,
         verbose=True,
         ns=False,
     )

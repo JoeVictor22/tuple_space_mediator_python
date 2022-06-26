@@ -5,7 +5,7 @@ import uuid
 
 import Pyro4
 
-from config import PYRO_URL
+from config import PYRO_CHAT_PORT, PYRO_CHAT_HOST, PYRO_CHAT_NAME
 
 import time
 
@@ -30,7 +30,9 @@ class Client:
     def __init__(self, room="default", name=None):
         self.name = name
         self.room = room
-        self.server = Pyro4.core.Proxy(PYRO_URL)
+        self.server = Pyro4.core.Proxy(
+            f"PYRO:{PYRO_CHAT_NAME}@{PYRO_CHAT_HOST}:{PYRO_CHAT_PORT}"
+        )
         self.counter = time.time()
 
     def update(self):

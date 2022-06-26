@@ -1,9 +1,11 @@
 import random
 import time
+from pprint import pprint
 
 import Pyro4
 
-from config import PYRO_BROKER_PORT, PYRO_BROKER_HOST, PYRO_BROKER_NAME
+from app.objects import TupleObject
+from config import PYRO_BROKER_PORT, PYRO_BROKER_HOST, PYRO_BROKER_NAME, PYRO_CHAT_NAME, PYRO_CHAT_HOST, PYRO_CHAT_PORT
 
 
 class Espiao:
@@ -45,30 +47,65 @@ class Espiao:
         self.broker = Pyro4.core.Proxy(
             f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}"
         )
+        self.chat_server = Pyro4.core.Proxy(
+            f"PYRO:{PYRO_CHAT_NAME}@{PYRO_CHAT_HOST}:{PYRO_CHAT_PORT}"
+        )
         self.random = False
         self.timer = 1
         self.calls = 0
         self.active = False
         self.buffer = list()
         self.counter = time.time()
+        self.monitor_msgs = list()
+        self.messages_id = list()
+        self.messages = list()
 
     def add_new_msg(self, msg):
-        print(f"NOVA MSG:  {msg}")
-        print(f"topico {self.topic_name}")
+        self.monitor_msgs.append(msg)
+
+    def add_messages_to_buffer(self, messages):
+        msgs = map(TupleObject.pickle_deserialize, messages)
+        added_msgs = [
+            self._add_new_message(msg)
+            for msg in msgs
+            if not self._exists_in_client(msg)
+        ]
+
+    def _exists_in_client(self, message):
+        if message.uuid in self.messages_id:
+            return True
+        return False
+
+    def _add_new_message(self, message):
+        if not message.uuid:
+            return
+        return message
+
+    def add_message_to_broker(self, msg):
+        pprint(msg)
+        if self._exists_in_client(msg):
+            return
+
+        self.messages.append(msg)
+        self.messages_id.append(msg.uuid)
+        self.broker.publish(self.topic_name, self.value, msg.message)
+        self.insert_message(f"[ENCONTRADA] {msg.message}")
+
 
     def update(self):
         now = time.time()
         if now - self.counter < 0.16:
             return
 
-        # TODO, get messages from chat
-        # self.broker.publish(self.topic_name, self.value, message)
-        # self.insert_message(message)
+        msgs_on_server = self.chat_server.scan(
+            TupleObject().pickled()
+        )
 
-        rand = random.randint(0, 10)
-        if rand == 3:
-            print("ACHOU MSG")
-
+        for msg in msgs_on_server:
+            msg = TupleObject.pickle_deserialize(msg)
+            for msg_contains in self.monitor_msgs:
+                if msg_contains in msg.message:
+                    self.add_message_to_broker(msg)
         self.counter = time.time()
 
     def insert_message(self, message):
