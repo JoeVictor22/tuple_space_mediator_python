@@ -3,7 +3,9 @@ from config import PYRO_BROKER_NAME, PYRO_BROKER_HOST, PYRO_BROKER_PORT
 if __name__ == "__main__":
     import Pyro4
 
-    with Pyro4.Proxy(f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}") as p:
+    with Pyro4.Proxy(
+        f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}"
+    ) as p:
         try:
             p._pyroBind()
 

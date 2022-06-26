@@ -28,7 +28,6 @@ def start(espiao_alvo):
 
         return False
 
-
     def add_new_msg():
         if is_str(msg_a_monitorar):
             espiao.add_new_msg(str(msg_a_monitorar.get()))

@@ -42,7 +42,9 @@ class Espiao:
         self.name = name
         self.value = 0
         self.topic_name = topic_name
-        self.broker = Pyro4.core.Proxy(f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}")
+        self.broker = Pyro4.core.Proxy(
+            f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}"
+        )
         self.random = False
         self.timer = 1
         self.calls = 0

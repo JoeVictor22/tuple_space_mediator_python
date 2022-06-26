@@ -26,7 +26,9 @@ class Mediador:
         self.topics = list()
         self.name = name
         self.value = random.randint(0, 400)
-        self.broker = Pyro4.core.Proxy(f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}")
+        self.broker = Pyro4.core.Proxy(
+            f"PYRO:{PYRO_BROKER_NAME}@{PYRO_BROKER_HOST}:{PYRO_BROKER_PORT}"
+        )
         self.broker_topics = list()
         self.counter = time.time()
 
