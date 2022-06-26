@@ -14,7 +14,7 @@ if __name__ == "__main__":
             )
 
             if choice == "1":
-                from app_mom.Mediador import Mediador
+                from app_mom.mediador import Mediador
 
                 print("Criando Mediador")
                 cliente = Mediador()
